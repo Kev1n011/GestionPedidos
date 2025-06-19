@@ -1,4 +1,7 @@
+<?php
 
+ var_dump($users);
+?>
 
 <!doctype html>
 <html lang="en">
