@@ -2,7 +2,7 @@
 <html lang="en">
 <!-- [Head] start -->
   <title>Dashboard</title>
-  @include('layouts.header')
+  @include('layouts.head')
 <!-- [Head] end -->
 
 <!-- [Body] Start -->

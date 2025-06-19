@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckApiToken;
 
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,11 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(CheckApiToken::class)->name('dashboard');
+
+Route::get('/user_list/{id}', [UserController::class, 'getClients'])
+    ->middleware(CheckApiToken::class)
+    ->name('user_list');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
