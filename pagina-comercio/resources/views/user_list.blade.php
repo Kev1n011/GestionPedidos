@@ -510,6 +510,9 @@
         <!-- [ sample-page ] start -->
         <div class="col-sm-12">
           <div class="card border-0 table-card user-profile-list">
+            <div class="ms-auto" style="margin-bottom: 20px">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Agregar usuario</button>
+            </div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-hover" id="pc-dt-simple">
@@ -571,6 +574,60 @@
         </div>
         <!-- [ sample-page ] end -->
       </div>
+
+      <!-- Modal CREAR USUARIO -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar usuario</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" enctype="multipart/form-data" id="formAddUser" action="{{route(name: 'addUser')}}">
+                  @csrf
+                  @method('POST')
+               <div class="row">
+                  <div class="mb-3">
+                      <label for="profilePic" class="form-label">Imagen de perfil</label>
+                      <input type="file" class="form-control" id="cover" name="cover" name="cover" required>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label" for="firstName">Nombres</label>
+                      <input type="text" class="form-control" id="firstName" name="firstName" aria-describedby="firstNameHelp" placeholder="Ingrese sus nombres"/>
+                    </div>
+                      <div class="mb-3">
+                      <label class="form-label" for="lastName">Apellidos</label>
+                      <input type="text" class="form-control" id="lastName" name="lastName" aria-describedby="lastNameHelp" placeholder="Ingrese sus apellidos"/>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="email">Email address</label>
+                      <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter email"/>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label">Número de teléfono</label>
+                      <input type="number" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="e.g. 000000000" />
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="password">Password</label>
+                      <input type="password" class="form-control" id="password" name="password" placeholder="Password" />
+                    </div>
+                    <input type="hidden" name="addUser" value="addUser">
+                  </div>
+                </div>
+                 <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+              </form>
+            </div>
+           
+          </div>
+        </div>
+      </div>
       <!-- [ Main Content ] end -->
     </div>
   </div>
@@ -586,6 +643,15 @@
       sortable: false,
       perPage: 5
     });
+  </script>
+  <script>
+    const myModal = document.getElementById('myModal')
+    const myInput = document.getElementById('myInput')
+
+    myModal.addEventListener('shown.bs.modal', () => {
+      myInput.focus()
+      
+    })
   </script>
   <!-- [Page Specific JS] end -->
 

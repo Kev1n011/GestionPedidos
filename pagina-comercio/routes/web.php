@@ -18,7 +18,7 @@ Route::get('/dashboard', function () {
 Route::get('/user_list/{id}', [UserController::class, 'getClients'])
     ->middleware(CheckApiToken::class)
     ->name('user_list');
-
+Route::post('/addUser', [UserController:: class, "addUser"])->name('addUser');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

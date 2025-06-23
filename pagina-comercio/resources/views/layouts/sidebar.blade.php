@@ -1,9 +1,9 @@
 <nav class="pc-sidebar">
     <div class="navbar-wrapper">
         <div class="m-header">
-            <a href="index.html" class="b-brand text-primary">
+            <a href={{asset("../dashboard")}} class="b-brand text-primary">
                 <!-- ========   Change your logo from here   ============ -->
-                <img src="../assets/images/logo-dark.svg" alt="logo image" class="logo-lg" />
+                <img src={{asset("/assets/images/logo-dark.svg")}} alt="logo image" class="logo-lg" />
                 <span class="badge bg-brand-color-2 rounded-pill ms-2 theme-version">v1.2.0</span>
             </a>
         </div>

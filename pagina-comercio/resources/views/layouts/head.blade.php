@@ -9,6 +9,7 @@
 
     <!-- [Favicon] icon -->
     <link rel="icon" href={{asset("/assets/images/favicon.svg")}} type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
 
 
     <!-- map-vector css -->
@@ -30,5 +31,11 @@
     <!-- [Template CSS Files] -->
     <link rel="stylesheet" href={{asset("/assets/css/style.css")}} id="main-style-link" />
     <link rel="stylesheet" href={{asset("/assets/css/style-preset.css")}} />
+    <style>
+        body.modal-open {
+            overflow: auto !important;
+            padding-right: 0 !important;
+        }
+    </style>
 
 </head>
