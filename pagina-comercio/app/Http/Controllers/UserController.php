@@ -39,7 +39,12 @@ class UserController extends Controller
     {
         $token = Session::get('token');
         $curl = curl_init();
-
+        
+        if($id == 1){
+            $id = 0;
+        }else{
+            $id = $id - 1;
+        }
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://crud.jonathansoto.mx/api/users',
             CURLOPT_RETURNTRANSFER => true,
@@ -57,6 +62,12 @@ class UserController extends Controller
 
         $response = curl_exec($curl);
         $users = json_decode($response, true);
+
+        /*$offset = $id * 5;
+        $length = 5;
+        var_dump($offset, $length);
+        $users = array_slice($users_response['data'], $offset, $length);*/
+
 
         if (!isset($users)) {
             $users = [];

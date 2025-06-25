@@ -1,3 +1,7 @@
+<?php
+var_dump($id);
+?>
+
 <!doctype html>
 <html lang="en">
 <!-- [Head] start -->
@@ -513,6 +517,9 @@
             <div class="ms-auto" style="margin-bottom: 20px">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Agregar usuario</button>
             </div>
+            <div id="users-content">
+              
+            </div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-hover" id="pc-dt-simple">
@@ -527,7 +534,12 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @foreach ($users['data'] as $user)
+                    <?php
+                      $offset = $id * 5;
+                      $length = 5;
+                      $usersArray = array_slice($users['data'], $offset, $length);
+                    ?>
+                    @foreach ($usersArray as $user)
                       <tr>
                           @php
                               $date = new DateTime($user['created_at']);
@@ -568,6 +580,38 @@
                     @endforeach
                   </tbody>
                 </table>
+              </div>
+              
+            </div>
+            <div class="row">
+              <div class="col-12 d-flex justify-content-between align-items-center">
+                <p class="mb-0">Mostrando 1 de 5 de {{ count($users['data']) }}</p>
+
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination mb-0">
+                    <?php
+                      if($id > 0){
+                        ?> 
+                          <li class="page-item"><a class="page-link" href="{{ asset("user_list/" . $id) }}">Previous</a></li>
+                        <?php
+                      }
+                    ?>
+                    <?php
+                      $records = count($users['data']);
+                      $entriesPerPage = 5;
+                      $pages = ceil($records / $entriesPerPage);
+                      var_dump($id);
+                    ?>
+                    @for ($counter = 1; $counter <= $pages; $counter++)
+                      @if ($counter == $id + 1)
+                        <li class="page-item active"><a class="page-link" href="{{ asset("user_list/" . $counter) }}">{{ $counter }}</a></li>
+                      @else
+                      <li class="page-item"><a class="page-link" href="{{ asset("user_list/" . $counter) }}">{{ $counter }}</a></li>
+                      @endif
+                    @endfor
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>
@@ -637,13 +681,7 @@
   @include('layouts.scripts')
   <!-- [Page Specific JS] start -->
 
-  <script src="{{asset('/assets/js/plugins/simple-datatables.js')}}"></script>
-  <script>
-    const dataTable = new simpleDatatables.DataTable('#pc-dt-simple', {
-      sortable: false,
-      perPage: 5
-    });
-  </script>
+ 
   <script>
     const myModal = document.getElementById('myModal')
     const myInput = document.getElementById('myInput')
