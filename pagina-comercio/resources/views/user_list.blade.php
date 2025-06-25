@@ -1,7 +1,3 @@
-<?php
-var_dump($id);
-?>
-
 <!doctype html>
 <html lang="en">
 <!-- [Head] start -->
@@ -517,9 +513,6 @@ var_dump($id);
             <div class="ms-auto" style="margin-bottom: 20px">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">+ Agregar usuario</button>
             </div>
-            <div id="users-content">
-              
-            </div>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-hover" id="pc-dt-simple">
@@ -585,31 +578,37 @@ var_dump($id);
             </div>
             <div class="row">
               <div class="col-12 d-flex justify-content-between align-items-center">
-                <p class="mb-0">Mostrando 1 de 5 de {{ count($users['data']) }}</p>
-
+                <?php
+                    $records = count($users['data']);
+                    $entriesPerPage = 5;
+                    $pages = ceil($records / $entriesPerPage);
+                ?>
+                <p class="mb-0">Mostrando {{ $id + 1 }} de {{ $pages }} páginas</p>
                 <nav aria-label="Page navigation example">
                   <ul class="pagination mb-0">
                     <?php
                       if($id > 0){
                         ?> 
-                          <li class="page-item"><a class="page-link" href="{{ asset("user_list/" . $id) }}">Previous</a></li>
+                          <li class="page-item"><a class="page-link" onclick="cambiarPagina({{ $id }})" style="cursor: pointer">Previous</a></li>
                         <?php
                       }
                     ?>
-                    <?php
-                      $records = count($users['data']);
-                      $entriesPerPage = 5;
-                      $pages = ceil($records / $entriesPerPage);
-                      var_dump($id);
-                    ?>
                     @for ($counter = 1; $counter <= $pages; $counter++)
                       @if ($counter == $id + 1)
-                        <li class="page-item active"><a class="page-link" href="{{ asset("user_list/" . $counter) }}">{{ $counter }}</a></li>
+                        <li class="page-item active"><a class="page-link">{{ $counter }}</a></li>
                       @else
-                      <li class="page-item"><a class="page-link" href="{{ asset("user_list/" . $counter) }}">{{ $counter }}</a></li>
+                      <li class="page-item {{ $counter == $id + 1 ? 'active' : '' }}">
+                        <button class="page-link" onclick="cambiarPagina({{ $counter }})">{{ $counter }}</button>
+                      </li>
                       @endif
                     @endfor
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                     <?php
+                      if($id < $pages -1){
+                        ?> 
+                          <li class="page-item"><a class="page-link" onclick="cambiarPagina({{ $id+=2}})" style="cursor: pointer">Next</a></li>
+                        <?php
+                      }
+                    ?>
                   </ul>
                 </nav>
               </div>
@@ -691,6 +690,35 @@ var_dump($id);
       
     })
   </script>
+<script>
+  function cambiarPagina(pagina) {
+    const nuevaURL = `/user_list/${pagina}`;
+    history.pushState({}, '', nuevaURL);
+
+    fetch(nuevaURL)
+      .then(res => res.text())
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        const nuevoTbody = doc.querySelector('#pc-dt-simple tbody');
+        const nuevaPaginacion = doc.querySelector('.pagination');
+        const nuevaLeyenda = doc.querySelector('p.mb-0'); // "Mostrando 1 de 5..."
+
+        // Reemplazar la tabla
+        document.querySelector('#pc-dt-simple tbody').innerHTML = nuevoTbody.innerHTML;
+
+        // Reemplazar la paginación
+        document.querySelector('.pagination').innerHTML = nuevaPaginacion.innerHTML;
+
+        // Reemplazar leyenda (opcional)
+        document.querySelector('p.mb-0').innerHTML = nuevaLeyenda.innerHTML;
+      })
+      .catch(error => {
+        console.error("Error al cargar la nueva página:", error);
+      });
+  }
+</script>
   <!-- [Page Specific JS] end -->
 
 
