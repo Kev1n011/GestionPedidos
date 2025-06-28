@@ -15,10 +15,15 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(CheckApiToken::class)->name('dashboard');
 
-Route::get('/user_list/{id}', [UserController::class, 'getClients'])
+//USUARIOS
+Route::get('/user_list/{id}', [UserController::class, 'getUsers'])
     ->middleware(CheckApiToken::class)
     ->name('user_list');
 Route::post('/addUser', [UserController:: class, "addUser"])->name('addUser');
+
+Route::get('/user_details/{id}', [UserController::class, 'getUser'])
+    ->middleware(CheckApiToken::class)
+    ->name('user_details');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
