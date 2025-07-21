@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="page-header-title">
-                                <h2 class="mb-0">User Details</h2>
+                                <h2 class="mb-0">Edit User</h2>
                             </div>
                         </div>
                     </div>
@@ -55,50 +55,56 @@
                         <div class="card-body">
                             @if ($user !== [])
                                 <div class="row">
-                                    <div class="col-md-4 text-center">
-                                        <div class="d-flex justify-content-center align-items-center" style="height: 400px;">
-                                            <img src="{{ $user['avatar_url'] }}" class="rounded-circle img-thumbnail w-100 h-100 object-fit-cover">
+                                    <div class="col-md-12  d-flex">
+                                        <div class="d-flex justify-content-center align-items-center" style="height: 135px; width: 135px">
+                                            @if ($user['avatar_url'] != null)
+                                                <img src="{{ $user['avatar_url'] }}" class="rounded-circle img-thumbnail w-100 h-100 object-fit-cover">
+                                            @endif
                                         </div>
-                                        <small class="d-block text-muted mt-2">Profile Picture</small>
+                                        <div class="d-flex align-items-center">
+                                            <div style="margin-left: 30px">
+                                                <h5 style="font-weight: bolder;">{{ $user['name'] }}</h5>
+                                                <p style="font-weight: lighter">{{ $user['email'] }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex ms-auto align-items-center">
+                                            <div>
+                                                <button class="btn btn-info me-2">Ver detalles</button>
+                                                <button class="btn btn-danger">Eliminar</button>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    <div class="col-md-8">
+                                </div>
+                                <div class="row"  style="margin-top: 25px;">
+                                    <div class="col-md-12">
                                         <form>
-                                            <div class="mb-3">
-                                                <label class="form-label">Name:</label>
-                                                <input type="text" class="form-control" placeholder="Enter full name" value="{{ $user['name'] }}" disabled />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Lastname:</label>
-                                                <input type="text" class="form-control" placeholder="Enter full name" value="{{ $user['lastname'] }}" disabled />
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Email:</label>
-                                                <input type="email" class="form-control" placeholder="Enter email" value="{{ $user['email'] }}" disabled />
-                                            </div>
-                                            <div class="mb-3">              
-                                                <label class="form-label">Phone number</label>
-                                                @if (empty($user['phone_number']))
-                                                    <input type="text" class="form-control" placeholder="Enter Password" value="Sin número de teléfono" disabled />
-                                                @else
-                                                    <input type="text" class="form-control" placeholder="Enter Password" value="{{ $user['phone_number'] }}" disabled />
-                                                @endif
-                                            </div>
-                                            <div class="mb-0">
-                                                <label class="form-label">Language:</label>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input input-primary" id="customCheckinl1" checked />
-                                                    <label class="form-check-label" for="customCheckinl1">English</label>
+                                            <div class="row">
+                                                <div class="mb-3 col-md-6">
+                                                    <label class="form-label">Name:</label>
+                                                    <input type="text" class="form-control" placeholder="Enter full name" value="{{ $user['name'] }}" disabled />
                                                 </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input input-primary" id="customCheckinl2" />
-                                                    <label class="form-check-label" for="customCheckinl2">French</label>
-                                                </div>
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input input-primary" id="customCheckinl3" />
-                                                    <label class="form-check-label" for="customCheckinl3">Dutch</label>
+                                                <div class="mb-3 col-md-6">
+                                                    <label class="form-label">Lastname:</label>
+                                                    <input type="text" class="form-control" placeholder="Enter full name" value="{{ $user['lastname'] }}" disabled />
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="mb-3 col-md-6">
+                                                    <label class="form-label">Email:</label>
+                                                    <input type="email" class="form-control" placeholder="Enter email" value="{{ $user['email'] }}" disabled />
+                                                </div>
+                                                <div class="mb-3 col-md-6">              
+                                                    <label class="form-label">Phone number</label>
+                                                    @if (empty($user['phone_number']))
+                                                        <input type="text" class="form-control" placeholder="Enter Password" value="Sin número de teléfono" disabled />
+                                                    @else
+                                                        <input type="text" class="form-control" placeholder="Enter Password" value="{{ $user['phone_number'] }}" disabled />
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="d-flex" style="margin-top: 35px">
+                                                <button class="btn btn-primary ms-auto">Actualizar usuario</button>
+                                            </div>                                           
                                         </form>
                                     </div>
                                 </div>
