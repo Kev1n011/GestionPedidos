@@ -44,7 +44,7 @@ class LoginRequest extends FormRequest
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL => 'https://crud.jonathansoto.mx/api/login',
+            CURLOPT_URL =>  'http://127.0.0.1:8000/api/login',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -71,8 +71,7 @@ class LoginRequest extends FormRequest
         }
 
         $data = json_decode($response, true);
-
-        if (!isset($data['code']) || $data['code'] != 2 || !isset($data['data']['token'])) {
+        if (!isset($data['data']['token'])) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

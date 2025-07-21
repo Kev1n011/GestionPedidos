@@ -91,10 +91,7 @@
                                 $date = new DateTime($user['created_at']);
                                 $newDate = $date->format('Y-m-d'); 
 
-                                $phone_number = $user['phone_number'];
-                                if($user['phone_number'] == null){
-                                  $phone_number = "Sin numero";
-                                }
+                                $phone_number = isset($user['phone_number']) && $user['phone_number'] !== null ? $user['phone_number'] : "Sin numero";
                             @endphp
                           <td>
                             <div class="d-inline-block align-middle">
@@ -102,11 +99,11 @@
                                 class="img-radius align-top m-r-15" style="width: 40px" />
                               <div class="d-inline-block">
                                 <h6 class="m-b-0">{{ $user['name'] }}</h6>
-                                <p class="m-b-0 text-primary">{{ $user['role'] }}</p>
+                                <p class="m-b-0 text-primary">{{ $user['role'] ?? 'Sin rol' }}</p>
                               </div>
                             </div>
                           </td>
-                          <td>{{ $user['role'] }}</td>
+                          <td>{{ $user['role'] ?? 'Sin rol' }}</td>
                           <td>{{ $user['email'] }}</td>
                           <td>{{ $phone_number }}</td>
                           <td>{{$newDate}}</td>
@@ -114,7 +111,7 @@
                           <ul class="list-inline mb-0">
                                 <li class="list-inline-item m-0"><a href="{{ asset('./user_details/' . $user['id']) }}" class="avtar avtar-s btn btn-secondary"><i
                                       class="ti ti-eye f-18"></i></a></li>
-                                <li class="list-inline-item m-0"><a href="#" class="avtar avtar-s btn btn-primary"><i
+                                <li class="list-inline-item m-0"><a href="{{ asset('./editUser/' . $user['id']) }}" class="avtar avtar-s btn btn-primary"><i
                                       class="ti ti-pencil f-18"></i></a></li>
                                 <li class="list-inline-item m-0"><a href="#"
                                     class="avtar avtar-s btn bg-white btn-link-danger"><i class="ti ti-trash f-18"></i></a>

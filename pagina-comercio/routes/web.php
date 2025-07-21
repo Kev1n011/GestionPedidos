@@ -25,6 +25,10 @@ Route::get('/user_details/{id}', [UserController::class, 'getUser'])
     ->middleware(CheckApiToken::class)
     ->name('user_details');
 
+Route::get('/editUser/{id}', [UserController::class, 'editUser'])
+    ->middleware(CheckApiToken::class)
+    ->name('user_editUser');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

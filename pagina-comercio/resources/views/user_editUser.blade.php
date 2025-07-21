@@ -47,7 +47,7 @@
             <!-- [ Main Content ] start -->
             <div class="row">
                 <!-- [ form-element ] start -->
-                <div class="col-lg-9">
+                <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
                             <h5>User information</h5>
