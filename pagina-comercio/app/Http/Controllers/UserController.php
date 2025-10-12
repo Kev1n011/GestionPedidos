@@ -140,7 +140,7 @@ class UserController extends Controller
             'password' => $request->input('password'),
             'password_confirmation' => $request->input('password'),
             'email' => $request->input('email'),
-            //'phone_number' => $request->input('phoneNumber'),
+            'phone_number' => $request->input('phoneNumber'),
             //'created_by' => $createdBy,
             //'role' => 'Administrador',
         ];
@@ -172,5 +172,36 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Usuario creado correctamente.');
 
 
+    }
+
+    public function deleteUser($id) 
+    {
+        $token = Session::get('token');
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'http://127.0.0.1:8000/api/users/'.$id.'',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'DELETE',
+        CURLOPT_HTTPHEADER => array(
+            'Accept: application/json',
+            'Authorization: Bearer ' . $token . ''
+        ),
+        ));
+
+        $response = curl_exec($curl);
+        $response = json_decode($response, true);
+        curl_close($curl);
+
+        if ($response['code'] != 200) {
+            return 'Hubo un error al intentar eliminar al usuario';
+        }
+        
+        return redirect()->back()->with('success', 'Usuario eliminado correctamente.');
     }
 }

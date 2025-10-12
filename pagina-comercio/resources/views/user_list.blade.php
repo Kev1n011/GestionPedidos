@@ -3,8 +3,18 @@
 <!-- [Head] start -->
 <title>Users list</title>
 @include('layouts.head')
+
 <!-- [Head] end -->
 <!-- [Body] Start -->
+<style>
+  .swal-button {
+  box-shadow: none !important;   /* Quita cualquier sombra */
+}
+.swal-button--cancel:hover {
+  background-color: #d1d1d1 !important; 
+}
+  
+</style>
 
 <body>
   <!-- [ Pre-loader ] start -->
@@ -108,15 +118,26 @@
                           <td>{{ $phone_number }}</td>
                           <td>{{$newDate}}</td>
                           <td>
-                          <ul class="list-inline mb-0">
-                                <li class="list-inline-item m-0"><a href="{{ asset('./user_details/' . $user['id']) }}" class="avtar avtar-s btn btn-secondary"><i
-                                      class="ti ti-eye f-18"></i></a></li>
-                                <li class="list-inline-item m-0"><a href="{{ asset('./editUser/' . $user['id']) }}" class="avtar avtar-s btn btn-primary"><i
-                                      class="ti ti-pencil f-18"></i></a></li>
-                                <li class="list-inline-item m-0"><a href="#"
-                                    class="avtar avtar-s btn bg-white btn-link-danger"><i class="ti ti-trash f-18"></i></a>
-                                </li>
-                              </ul>
+                            <ul class="list-inline mb-0">
+                                  <li class="list-inline-item m-0"><a href="{{ asset('./user_details/' . $user['id']) }}" class="avtar avtar-s btn btn-secondary"><i
+                                        class="ti ti-eye f-18"></i></a></li>
+                                  <li class="list-inline-item m-0"><a href="{{ asset('./editUser/' . $user['id']) }}" class="avtar avtar-s btn btn-primary"><i
+                                        class="ti ti-pencil f-18"></i></a></li>
+                                  <li class="list-inline-item m-0">
+                                    <form method="POST" enctype="multipart/form-data"
+                                          class="formDeleteUser"
+                                          action="{{ route('deleteUser', ['id' => $user['id']]) }}">
+                                      @csrf
+                                      @method('DELETE')
+                                      <button type="button"
+                                              data-user-id="{{ $user['id'] }}"
+                                              class="delete_user avtar avtar-s btn bg-white btn-link-danger">
+                                        <i class="ti ti-trash f-18"></i>
+                                      </button>
+                                    </form>
+                                  </li>
+                                
+                            </ul>
                           </td>
                         </tr>
 
@@ -252,6 +273,18 @@
           </div>
         </div>
       </div>
+
+      <div class="modal fade" id="change_password" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body change_password">
+            </div>
+        </div>
+    </div>
+</div>
       <!-- [ Main Content ] end -->
     </div>
   </div>
@@ -261,7 +294,7 @@
   @include('layouts.scripts')
   <!-- [Page Specific JS] start -->
 
- 
+
   <script>
     const myModal = document.getElementById('myModal')
     const myInput = document.getElementById('myInput')
@@ -271,35 +304,64 @@
       
     })
   </script>
-<script>
-  function cambiarPagina(pagina) {
-    const nuevaURL = `/user_list/${pagina}`;
-    history.pushState({}, '', nuevaURL);
+  <script>
+    function cambiarPagina(pagina) {
+      const nuevaURL = `/user_list/${pagina}`;
+      history.pushState({}, '', nuevaURL);
 
-    fetch(nuevaURL)
-      .then(res => res.text())
-      .then(html => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
+      fetch(nuevaURL)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
 
-        const nuevoTbody = doc.querySelector('#pc-dt-simple tbody');
-        const nuevaPaginacion = doc.querySelector('.pagination');
-        const nuevaLeyenda = doc.querySelector('p.mb-0'); // "Mostrando 1 de 5..."
+          const nuevoTbody = doc.querySelector('#pc-dt-simple tbody');
+          const nuevaPaginacion = doc.querySelector('.pagination');
+          const nuevaLeyenda = doc.querySelector('p.mb-0'); // "Mostrando 1 de 5..."
 
-        // Reemplazar la tabla
-        document.querySelector('#pc-dt-simple tbody').innerHTML = nuevoTbody.innerHTML;
+          // Reemplazar la tabla
+          document.querySelector('#pc-dt-simple tbody').innerHTML = nuevoTbody.innerHTML;
 
-        // Reemplazar la paginación
-        document.querySelector('.pagination').innerHTML = nuevaPaginacion.innerHTML;
+          // Reemplazar la paginación
+          document.querySelector('.pagination').innerHTML = nuevaPaginacion.innerHTML;
 
-        // Reemplazar leyenda (opcional)
-        document.querySelector('p.mb-0').innerHTML = nuevaLeyenda.innerHTML;
-      })
-      .catch(error => {
-        console.error("Error al cargar la nueva página:", error);
-      });
-  }
-</script>
+          // Reemplazar leyenda (opcional)
+          document.querySelector('p.mb-0').innerHTML = nuevaLeyenda.innerHTML;
+
+        })
+        .catch(error => {
+          console.error("Error al cargar la nueva página:", error);
+        });
+    }
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $(document).on('click', '.delete_user', function (e) {
+        e.preventDefault();
+        const form = $(this).closest('form');
+        swal({
+            title: "¿Estás seguro?",
+            text: "Una vez eliminado, ya no se podrá recuperar al usuario",
+            icon: "warning",
+            buttons: true,
+            danger: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              swal("El usuario ha sido eliminado!", {
+                icon: "success",
+              }).then(() => {
+                form.submit();
+          });
+
+            } else {
+              swal("Your imaginary file is safe!");
+            }
+          });
+        });
+    });
+  </script>
   <!-- [Page Specific JS] end -->
 
 

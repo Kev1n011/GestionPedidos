@@ -28,6 +28,8 @@ Route::get('/user_details/{id}', [UserController::class, 'getUser'])
 Route::get('/editUser/{id}', [UserController::class, 'editUser'])
     ->middleware(CheckApiToken::class)
     ->name('user_editUser');
+Route::delete('/deleteUser/{id}', [UserController::class, 'deleteUser'])->name('deleteUser');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
